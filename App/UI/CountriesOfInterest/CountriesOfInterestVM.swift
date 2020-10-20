@@ -57,9 +57,11 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
     self.isHeaderVisible = isHeaderVisible
     self.currentCountries = currentCountries
 
-    var cellList: [(String, String, Bool, Bool)] = []
+    var countryItems: [CountriesOfInterestVM.CellType] = []
 
-    for (countryId, countryName) in countryList {
+    let sortedCountryList = countryList.sorted { $0.value < $1.value }
+
+    for (countryId, countryName) in sortedCountryList {
       let index = currentCountries?
         .firstIndex(of: CountryOfInterest(country: Country(
           countryId: countryId,
@@ -67,7 +69,12 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
         )))
 
       if index == nil || currentCountries?.isEmpty ?? true {
-        cellList.append((countryId, countryName, false, false))
+        countryItems.append(CountriesOfInterestVM.CellType.radio(
+          countryIdentifier: countryId,
+          countryName: countryName,
+          isSelected: false,
+          isDisable: false
+        ))
         continue
       }
 
@@ -76,23 +83,18 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
       if currentCountry!.selectionDate == nil || Date()
         .timeIntervalSince(currentCountry!.selectionDate!) > dummyIngestionWindowDuration
       {
-        cellList.append((countryId, countryName, true, false))
+        countryItems
+          .append(
+            CountriesOfInterestVM.CellType
+              .radio(countryIdentifier: countryId, countryName: countryName, isSelected: true, isDisable: false)
+          )
       } else {
-        cellList.append((countryId, countryName, true, true))
+        countryItems
+          .append(
+            CountriesOfInterestVM.CellType
+              .radio(countryIdentifier: countryId, countryName: countryName, isSelected: true, isDisable: true)
+          )
       }
-    }
-
-    cellList.sort { $0.1 < $1.1 }
-    var countryItems = [CountriesOfInterestVM.CellType]()
-    for element in cellList {
-      countryItems.append(
-        CountriesOfInterestVM.CellType.radio(
-          countryIdentifier: element.0,
-          countryName: element.1,
-          isSelected: element.2,
-          isDisable: element.3
-        )
-      )
     }
 
     self.items = [
