@@ -119,7 +119,7 @@ extension CountriesOfInterestVM {
         return OnboardingSpacerCellVM(size: size)
 
       case .radio(_, let countryName, let isSelected, let isDisable):
-        return OnboardingCheckCellVM(title: countryName, isSelected: isSelected, isDisable: isDisable)
+        return CountriesOfInterestCheckCellVM(title: countryName, isSelected: isSelected, isDisable: isDisable)
       }
     }
   }

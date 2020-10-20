@@ -38,7 +38,7 @@ final class CountriesOfInterestView: UIView, ViewControllerModellableView {
     collection.delegate = self
     collection.dataSource = self
 
-    collection.register(OnboardingCheckCell.self)
+    collection.register(CountriesOfInterestCheckCell.self)
     collection.register(OnboardingHeaderCell.self)
     collection.register(OnboardingSpacerCell.self)
 
@@ -108,17 +108,17 @@ final class CountriesOfInterestView: UIView, ViewControllerModellableView {
   /// - warning: the method assumes that 1)cells' order doesn't change and 2) only radio cells change
   private func updateCollection(using model: CountriesOfInterestVM) {
     let radioCells = self.contentCollection.visibleCells.filter { item in
-      item is OnboardingCheckCell
+      item is CountriesOfInterestCheckCell
     }
     for cell in radioCells {
       guard
-        let typedCell = cell as? OnboardingCheckCell,
+        let typedCell = cell as? CountriesOfInterestCheckCell,
         let idxPath = self.contentCollection.indexPath(for: cell)
         else {
           continue
       }
 
-      typedCell.model = model.items[safe: idxPath.row]?.cellVM as? OnboardingCheckCellVM
+      typedCell.model = model.items[safe: idxPath.row]?.cellVM as? CountriesOfInterestCheckCellVM
     }
   }
 
@@ -195,7 +195,7 @@ extension CountriesOfInterestView: UICollectionViewDataSource {
       return self.dequeue(OnboardingSpacerCell.self, for: indexPath, in: collectionView, using: item.cellVM)
 
     case .radio:
-      return self.dequeue(OnboardingCheckCell.self, for: indexPath, in: collectionView, using: item.cellVM)
+      return self.dequeue(CountriesOfInterestCheckCell.self, for: indexPath, in: collectionView, using: item.cellVM)
     }
   }
 

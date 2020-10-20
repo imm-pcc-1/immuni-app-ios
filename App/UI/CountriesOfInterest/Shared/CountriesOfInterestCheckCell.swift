@@ -1,4 +1,4 @@
-// OnboardingCheckCell.swift
+// CountriesOfInterestCheckCell.swift
 // Copyright (C) 2020 Presidenza del Consiglio dei Ministri.
 // Please refer to the AUTHORS file for more information.
 // This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ import Tempura
 
 // MARK: - Model
 
-struct OnboardingCheckCellVM: ViewModel, Hashable {
+struct CountriesOfInterestCheckCellVM: ViewModel, Hashable {
   let title: String
   let isSelected: Bool
   let isDisable: Bool
@@ -37,7 +37,7 @@ struct OnboardingCheckCellVM: ViewModel, Hashable {
 
 // MARK: - View
 
-class OnboardingCheckCell: UICollectionViewCell, ModellableView, ReusableView {
+class CountriesOfInterestCheckCell: UICollectionViewCell, ModellableView, ReusableView {
   private static let titleToCheckmarkMargin: CGFloat = 20
 
   // we cannot rely on the proper asset size, as the checked one
@@ -75,7 +75,7 @@ class OnboardingCheckCell: UICollectionViewCell, ModellableView, ReusableView {
 
   // MARK: Update
 
-  func update(oldModel: OnboardingCheckCellVM?) {
+  func update(oldModel: CountriesOfInterestCheckCellVM?) {
     guard let model = self.model else {
       self.checkmark.image = nil
       self.title.attributedText = nil
@@ -125,7 +125,7 @@ class OnboardingCheckCell: UICollectionViewCell, ModellableView, ReusableView {
 
 // MARK: - Style
 
-private extension OnboardingCheckCell {
+private extension CountriesOfInterestCheckCell {
   enum Style {
     static func checkmark(_ view: UIImageView, isSelected: Bool, isDisable: Bool) {
       if isSelected && !isDisable {
