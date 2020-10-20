@@ -250,8 +250,10 @@ extension Logic.Settings {
 
       let dummyIngestionWindowDuration = state.configuration.dummyIngestionWindowDuration
       let countries = state.exposureDetection.countriesOfInterest
-      let lan = Locale.current.languageCode ?? "en"
-      let countryList: [String: String] = state.configuration.countries[lan] ?? state.configuration.countries["en"]!
+
+      let language = state.environment.userLanguage
+      let countryList: [String: String] = state.configuration.countries[language.rawValue] ??
+        state.configuration.countries[UserLanguage.english.rawValue]!
 
       try context.awaitDispatch(Show(
         Screen.updateCountry,
