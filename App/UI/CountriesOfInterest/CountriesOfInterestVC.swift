@@ -23,7 +23,10 @@ final class CountriesOfInterestVC: ViewControllerWithLocalState<CountriesOfInter
     }
 
     self.rootView.userDidTapComplete = { [weak self] in
-      self!.store.dispatch(Logic.Settings.CompleteUpdateCountries(newCountries: self!.localState.currentCountries))
+      guard let self = self else {
+        return
+      }
+      self.store.dispatch(Logic.Settings.CompleteUpdateCountries(newCountries: self.localState.currentCountries))
     }
 
     self.rootView.userDidScroll = { [weak self] scrollOffset in
@@ -36,26 +39,25 @@ final class CountriesOfInterestVC: ViewControllerWithLocalState<CountriesOfInter
 
     self.rootView.userDidSelectCountry = { [weak self] countryOfInterest in
 
+      guard let self = self else {
+        return
+      }
       let country = Country(countryId: countryOfInterest!.0, countryHumanReadableName: countryOfInterest!.1)
       let isDisable = countryOfInterest!.2
 
       guard !isDisable else {
         return
       }
-      if self?.localState.currentCountries != nil {
-        // Remove country if it's selected
+      // Remove country if it's selected
 
-        if self!.localState.currentCountries.contains(CountryOfInterest(country: country)) {
-          self!.localState.currentCountries
-            .remove(at: self!.localState.currentCountries.firstIndex(of: CountryOfInterest(country: country))!)
-        } else {
-          self?.localState.currentCountries.append(CountryOfInterest(country: country))
-        }
+      if self.localState.currentCountries.contains(CountryOfInterest(country: country)) {
+        self.localState.currentCountries
+          .remove(at: self.localState.currentCountries.firstIndex(of: CountryOfInterest(country: country))!)
       } else {
-        self?.localState.currentCountries.append(CountryOfInterest(country: country))
+        self.localState.currentCountries.append(CountryOfInterest(country: country))
       }
 
-      self?.onboardingContainer?.setNeedsRefreshControls()
+      self.onboardingContainer?.setNeedsRefreshControls()
     }
   }
 }
