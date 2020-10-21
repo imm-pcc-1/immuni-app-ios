@@ -63,6 +63,10 @@ struct HomeInfoCellVM: ViewModel {
       return .cardLightBlue
     }
   }
+
+  var cardBannerImage: UIImage? {
+    return Asset.Home.cardImageNew.image
+  }
 }
 
 class HomeInfoCell: UICollectionViewCell, ModellableView, ReusableView {
@@ -118,7 +122,7 @@ class HomeInfoCell: UICollectionViewCell, ModellableView, ReusableView {
     }
 
     if model.kind == .updateCountry {
-      Self.Style.logoNewEuropa(self.cardImageNew)
+      Self.Style.cardBanner(self.cardImageNew, image: model.cardBannerImage)
     } else {
       self.cardImageNew.image = nil
     }
@@ -175,6 +179,10 @@ class HomeInfoCell: UICollectionViewCell, ModellableView, ReusableView {
 
 private extension HomeInfoCell {
   enum Style {
+    static func cardBanner(_ imageView: UIImageView, image: UIImage?) {
+      imageView.image = image
+    }
+
     static func container(_ view: UIView, lightContent: Bool) {
       view.backgroundColor = lightContent ? Palette.purple : Palette.white
 
@@ -211,10 +219,6 @@ private extension HomeInfoCell {
       button.contentHorizontalAlignment = .left
       button.titleLabel?.numberOfLines = 0
       button.attributedTitle = content.styled(with: textStyle)
-    }
-
-    static func logoNewEuropa(_ imageView: UIImageView) {
-      imageView.image = Asset.Home.cardImageNew.image
     }
 
     static func icon(_ view: AnimationView, animation: Animation?) {
