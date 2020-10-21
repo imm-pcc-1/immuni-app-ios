@@ -328,14 +328,6 @@ extension Logic.Onboarding {
       state.user.province = self.province
     }
   }
-
-  struct SetUserCountries: AppStateUpdater {
-    let countries: [CountryOfInterest]
-
-    func updateState(_ state: inout AppState) {
-      state.exposureDetection.countriesOfInterest = self.countries
-    }
-  }
 }
 
 // MARK: Private State Updaters

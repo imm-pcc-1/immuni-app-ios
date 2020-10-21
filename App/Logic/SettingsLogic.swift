@@ -306,7 +306,7 @@ extension Logic.Settings {
         try await(self.showUpdateCountriesConfirmation(dispatch: context.dispatch(_:)))
       }
 
-      try context.awaitDispatch(Logic.Onboarding.SetUserCountries(countries: newCountriesOfInterest))
+      try context.awaitDispatch(Logic.CountriesOfInterest.SetUserCountries(countries: newCountriesOfInterest))
       context.dispatch(Hide(Screen.updateCountry, animated: true))
     }
 
