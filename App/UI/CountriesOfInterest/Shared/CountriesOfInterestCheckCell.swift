@@ -16,18 +16,23 @@ import BonMot
 import Extensions
 import Foundation
 import Katana
+import Models
 import PinLayout
 import Tempura
 
 // MARK: - Model
 
+struct CountryOfInterestCheckCell: Hashable, Equatable {
+  var country: Country
+  var isSelected: Bool
+  var isDisabled: Bool
+}
+
 struct CountriesOfInterestCheckCellVM: ViewModel, Hashable {
-  let title: String
-  let isSelected: Bool
-  let isDisable: Bool
+  let countryOfInterestCheckCell: CountryOfInterestCheckCell
 
   var accessibilityTraits: UIAccessibilityTraits {
-    if self.isSelected {
+    if self.countryOfInterestCheckCell.isSelected {
       return [.button, .selected]
     } else {
       return .button
@@ -82,11 +87,18 @@ class CountriesOfInterestCheckCell: UICollectionViewCell, ModellableView, Reusab
       return
     }
 
-    self.accessibilityLabel = model.title
+    self.accessibilityLabel = model.countryOfInterestCheckCell.country.countryHumanReadableName
     self.accessibilityTraits = model.accessibilityTraits
 
-    Self.Style.checkmark(self.checkmark, isSelected: model.isSelected, isDisable: model.isDisable)
-    Self.Style.title(self.title, content: model.title)
+    Self.Style.checkmark(
+      self.checkmark,
+      isSelected: model.countryOfInterestCheckCell.isSelected,
+      isDisabled: model.countryOfInterestCheckCell.isDisabled
+    )
+    Self.Style.title(
+      self.title,
+      content: model.countryOfInterestCheckCell.country.countryHumanReadableName
+    )
     self.setNeedsLayout()
   }
 
@@ -127,10 +139,10 @@ class CountriesOfInterestCheckCell: UICollectionViewCell, ModellableView, Reusab
 
 private extension CountriesOfInterestCheckCell {
   enum Style {
-    static func checkmark(_ view: UIImageView, isSelected: Bool, isDisable: Bool) {
-      if isSelected && !isDisable {
+    static func checkmark(_ view: UIImageView, isSelected: Bool, isDisabled: Bool) {
+      if isSelected && !isDisabled {
         view.image = Asset.Privacy.checkboxSelected.image
-      } else if isSelected && isDisable {
+      } else if isSelected && isDisabled {
         view.image = Asset.Privacy.checkboxSelectedDisable.image
       } else {
         view.image = Asset.Privacy.checkbox.image

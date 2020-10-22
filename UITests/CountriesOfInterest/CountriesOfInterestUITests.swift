@@ -55,43 +55,59 @@ extension CountriesOfInterestUITests {
       "CZ": "REPUBBLICA CECA",
       "ES": "SPAGNA"
     ]
-
     let currentCountries: [CountryOfInterest] = [
       CountryOfInterest(country: Country(countryId: "PL", countryHumanReadableName: "POLONIA")),
       CountryOfInterest(country: Country(countryId: "DE", countryHumanReadableName: "GERMANIA"), selectionDate: Date()),
       CountryOfInterest(country: Country(countryId: "DK", countryHumanReadableName: "POLONIA"))
     ]
-    var cellList: [(String, String, Bool, Bool)] = []
+    var countryItems: [CountriesOfInterestVM.CellType] = []
+    let sortedCountryList = countryList.sorted { $0.value < $1.value }
 
-    for (key, value) in countryList {
+    for (countryId, countryName) in sortedCountryList {
       let index = currentCountries
-        .firstIndex(of: CountryOfInterest(country: Country(countryId: key, countryHumanReadableName: value)))
+        .firstIndex(of: CountryOfInterest(country: Country(
+          countryId: countryId,
+          countryHumanReadableName: countryName
+        )))
 
-      if index == nil || currentCountries.isEmpty {
-        cellList.append((key, value, false, false))
+      if index == nil {
+        countryItems.append(CountriesOfInterestVM.CellType.radio(
+          countryOfInterestCheckCell: CountryOfInterestCheckCell(
+            country: Country(countryId: countryId, countryHumanReadableName: countryName),
+            isSelected: false,
+            isDisabled: false
+          )
+        ))
         continue
       }
 
       let currentCountry = currentCountries[index!]
 
       if currentCountry.selectionDate == nil {
-        cellList.append((key, value, true, false))
+        countryItems
+          .append(
+            CountriesOfInterestVM.CellType
+              .radio(
+                countryOfInterestCheckCell: CountryOfInterestCheckCell(
+                  country: Country(countryId: countryId, countryHumanReadableName: countryName),
+                  isSelected: true,
+                  isDisabled: false
+                )
+              )
+          )
       } else {
-        cellList.append((key, value, true, true))
+        countryItems
+          .append(
+            CountriesOfInterestVM.CellType
+              .radio(
+                countryOfInterestCheckCell: CountryOfInterestCheckCell(
+                  country: Country(countryId: countryId, countryHumanReadableName: countryName),
+                  isSelected: true,
+                  isDisabled: true
+                )
+              )
+          )
       }
-    }
-
-    cellList.sort { $0.1 < $1.1 }
-    var countryItems = [CountriesOfInterestVM.CellType]()
-    for element in cellList {
-      countryItems.append(
-        CountriesOfInterestVM.CellType.radio(
-          countryIdentifier: element.0,
-          countryName: element.1,
-          isSelected: element.2,
-          isDisable: element.3
-        )
-      )
     }
 
     return [

@@ -25,7 +25,7 @@ final class CountriesOfInterestView: UIView, ViewControllerModellableView {
 
   var userDidTapClose: Interaction?
   var userDidScroll: CustomInteraction<CGFloat>?
-  var userDidSelectCountry: CustomInteraction<(String, String, Bool)?>?
+  var userDidSelectCountry: CustomInteraction<CountryOfInterestCheckCell>?
   var userDidTapComplete: Interaction?
 
   static let horizontalSpacing: CGFloat = 30.0
@@ -224,7 +224,7 @@ extension CountriesOfInterestView: UICollectionViewDelegateFlowLayout {
     guard
       let model = model,
       let cell = model.items[safe: indexPath.row],
-      case CountriesOfInterestVM.CellType.radio(let countryIdentifier, let countryName, _, let isDisable) = cell
+      case CountriesOfInterestVM.CellType.radio(let countryOfInterestCheckCell) = cell
     else {
       return
     }
@@ -233,9 +233,7 @@ extension CountriesOfInterestView: UICollectionViewDelegateFlowLayout {
       // async here is required to prevent glitches in the collectionview
       // when reloading
 
-      self.userDidSelectCountry?(
-        (countryIdentifier, countryName, isDisable)
-      )
+      self.userDidSelectCountry?(countryOfInterestCheckCell)
     }
   }
 }

@@ -37,24 +37,25 @@ final class CountriesOfInterestVC: ViewControllerWithLocalState<CountriesOfInter
       }
     }
 
-    self.rootView.userDidSelectCountry = { [weak self] countryOfInterest in
+    self.rootView.userDidSelectCountry = { [weak self] countryOfInterestCheckCell in
 
       guard let self = self else {
         return
       }
-      let country = Country(countryId: countryOfInterest!.0, countryHumanReadableName: countryOfInterest!.1)
-      let isDisable = countryOfInterest!.2
 
-      guard !isDisable else {
+      guard !countryOfInterestCheckCell.isDisabled else {
         return
       }
       // Remove country if it's selected
 
-      if self.localState.currentCountries.contains(CountryOfInterest(country: country)) {
+      if self.localState.currentCountries.contains(CountryOfInterest(country: countryOfInterestCheckCell.country)) {
         self.localState.currentCountries
-          .remove(at: self.localState.currentCountries.firstIndex(of: CountryOfInterest(country: country))!)
+          .remove(
+            at: self.localState.currentCountries
+              .firstIndex(of: CountryOfInterest(country: countryOfInterestCheckCell.country))!
+          )
       } else {
-        self.localState.currentCountries.append(CountryOfInterest(country: country))
+        self.localState.currentCountries.append(CountryOfInterest(country: countryOfInterestCheckCell.country))
       }
 
       self.onboardingContainer?.setNeedsRefreshControls()

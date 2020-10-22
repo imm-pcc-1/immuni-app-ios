@@ -68,12 +68,13 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
           countryHumanReadableName: countryName
         )))
 
-      if index == nil || currentCountries?.isEmpty ?? true {
+      if index == nil {
         countryItems.append(CountriesOfInterestVM.CellType.radio(
-          countryIdentifier: countryId,
-          countryName: countryName,
-          isSelected: false,
-          isDisable: false
+          countryOfInterestCheckCell: CountryOfInterestCheckCell(
+            country: Country(countryId: countryId, countryHumanReadableName: countryName),
+            isSelected: false,
+            isDisabled: false
+          )
         ))
         continue
       }
@@ -86,13 +87,25 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
         countryItems
           .append(
             CountriesOfInterestVM.CellType
-              .radio(countryIdentifier: countryId, countryName: countryName, isSelected: true, isDisable: false)
+              .radio(
+                countryOfInterestCheckCell: CountryOfInterestCheckCell(
+                  country: Country(countryId: countryId, countryHumanReadableName: countryName),
+                  isSelected: true,
+                  isDisabled: false
+                )
+              )
           )
       } else {
         countryItems
           .append(
             CountriesOfInterestVM.CellType
-              .radio(countryIdentifier: countryId, countryName: countryName, isSelected: true, isDisable: true)
+              .radio(
+                countryOfInterestCheckCell: CountryOfInterestCheckCell(
+                  country: Country(countryId: countryId, countryHumanReadableName: countryName),
+                  isSelected: true,
+                  isDisabled: true
+                )
+              )
           )
       }
     }
@@ -107,7 +120,7 @@ extension CountriesOfInterestVM: ViewModelWithLocalState {
 extension CountriesOfInterestVM {
   enum CellType: Equatable {
     case titleHeader(title: String, description: String)
-    case radio(countryIdentifier: String, countryName: String, isSelected: Bool, isDisable: Bool)
+    case radio(countryOfInterestCheckCell: CountryOfInterestCheckCell)
     case spacer(OnboardingSpacerCellVM.Size)
 
     var cellVM: ViewModel {
@@ -118,8 +131,8 @@ extension CountriesOfInterestVM {
       case .spacer(let size):
         return OnboardingSpacerCellVM(size: size)
 
-      case .radio(_, let countryName, let isSelected, let isDisable):
-        return CountriesOfInterestCheckCellVM(title: countryName, isSelected: isSelected, isDisable: isDisable)
+      case .radio(let countryOfInterestCheckCell):
+        return CountriesOfInterestCheckCellVM(countryOfInterestCheckCell: countryOfInterestCheckCell)
       }
     }
   }
