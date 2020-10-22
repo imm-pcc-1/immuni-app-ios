@@ -57,33 +57,7 @@ final class CountriesOfInterestVC: ViewControllerWithLocalState<CountriesOfInter
       } else {
         self.localState.currentCountries.append(CountryOfInterest(country: countryOfInterestCheckCell.country))
       }
-
-      self.onboardingContainer?.setNeedsRefreshControls()
     }
-  }
-}
-
-extension CountriesOfInterestVC: OnboardingViewController {
-  func handleNext() {}
-
-  var nextButtonTitle: String {
-    L10n.Settings.UpdateProvince.updateProvince
-  }
-
-  var shouldNextButtonBeEnabled: Bool {
-    return false
-  }
-
-  var shouldShowBackButton: Bool {
-    return true
-  }
-
-  var shouldShowNextButton: Bool {
-    true
-  }
-
-  var shouldShowGradient: Bool {
-    true
   }
 }
 
